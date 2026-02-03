@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Фирмено PWA – Демо</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#101a33;
+      --card2:#0f1730;
+      --text:#e9eefc;
+      --muted:#aab6df;
+      --brand:#6ea8ff;
+      --ok:#4ade80;
+      --warn:#fbbf24;
+      --bad:#fb7185;
+      --line: rgba(255,255,255,.10);
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(900px 600px at 20% 10%, rgba(110,168,255,.22), transparent 60%), var(--bg);
+      color:var(--text);
+      display:flex;
+      justify-content:center;
+      padding:14px;
+    }
+    .app{width:min(980px, 100%); display:grid; grid-template-columns: 1fr; gap:12px;}
+    @media (min-width: 920px){
+      .app{grid-template-columns: 340px 1fr; align-items:start;}
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .head{
+      padding:14px 14px 10px;
+      border-bottom: 1px solid var(--line);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:10px;
+      background: linear-gradient(135deg, var(--brand), #9bffd6);
+      box-shadow: 0 10px 30px rgba(110,168,255,.35);
+    }
+    .title{line-height:1.1}
+    .title b{display:block; font-size:14px}
+    .title span{font-size:12px; color:var(--muted)}
+
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 10px;
+      border-radius:999px;
+      background: rgba(110,168,255,.15);
+      border: 1px solid rgba(110,168,255,.25);
+      color:#dbe7ff;
+      font-size:12px;
+      white-space:nowrap;
+    }
+
+    .nav{padding:10px; display:grid; gap:8px;}
+    .nav button{
+      width:100%;
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding:12px 12px;
+      border-radius:14px;
+      text-align:left;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+    }
+    .nav button:active{transform: scale(.99)}
+    .nav button.active{background: rgba(110,168,255,.15); border-color: rgba(110,168,255,.35)}
+    .nav small{color:var(--muted)}
+
+    .main{min-height: 560px;}
+    .content{padding:14px;}
+
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .grid{display:grid; gap:10px}
+    .grid.two{grid-template-columns: 1fr;}
+    @media (min-width: 560px){ .grid.two{grid-template-columns: 1fr 1fr;} }
+
+    .kpi{
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .kpi b{display:block; font-size:14px}
+    .kpi span{color:var(--muted); font-size:12px}
+
+    .btn{
+      border: 0;
+      background: var(--brand);
+      color:#071022;
+      font-weight:800;
+      padding:10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      box-shadow: 0 14px 30px rgba(110,168,255,.25);
+    }
+    .btn.secondary{
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow:none;
+      font-weight:700;
+    }
+
+    .input, .textarea, select{
+      width:100%;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 14px;
+      outline:none;
+    }
+    .textarea{min-height: 92px; resize: vertical;}
+    label{font-size:12px; color: var(--muted)}
+
+    .list{display:grid; gap:10px}
+    .item{
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px;
+      display:grid;
+      gap:8px;
+    }
+    .item .top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px}
+    .tag{font-size:12px; padding:4px 10px; border-radius:999px; border:1px solid var(--line); color:var(--muted);}
+    .tag.ok{border-color: rgba(74,222,128,.35); color: #b9f6cf; background: rgba(74,222,128,.08)}
+    .tag.warn{border-color: rgba(251,191,36,.35); color: #ffe7b0; background: rgba(251,191,36,.08)}
+    .tag.bad{border-color: rgba(251,113,133,.35); color: #ffd0d8; background: rgba(251,113,133,.08)}
+
+    .muted{color:var(--muted)}
+
+    .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+    .tabs button{background: rgba(255,255,255,.06); border:1px solid var(--line); color:var(--text); border-radius:999px; padding:8px 10px; cursor:pointer}
+    .tabs button.active{border-color: rgba(110,168,255,.35); background: rgba(110,168,255,.15)}
+
+    .chat{
+      display:grid; gap:10px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+    }
+    .chatlog{padding:12px; height: 280px; overflow:auto; background: rgba(0,0,0,.15)}
+    .bubble{max-width: 78%; padding:10px 12px; border-radius:14px; margin:6px 0; border:1px solid var(--line)}
+    .me{margin-left:auto; background: rgba(110,168,255,.14); border-color: rgba(110,168,255,.30)}
+    .other{margin-right:auto; background: rgba(255,255,255,.05)}
+    .chatbar{display:flex; gap:8px; padding:10px; background: rgba(255,255,255,.04); border-top:1px solid var(--line)}
+
+    .screenTitle{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px}
+    .screenTitle h2{margin:0; font-size:18px}
+
+    .hide{display:none !important}
+
+    .banner{
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(110,168,255,.30);
+      background: rgba(110,168,255,.12);
+      color:#dbe7ff;
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    /* PWA-ish bottom nav for phones */
+    .bottomNav{
+      position: sticky;
+      bottom: 0;
+      display:flex;
+      gap:8px;
+      padding:10px;
+      background: rgba(9,14,26,.82);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+    }
+    @media (min-width: 920px){ .bottomNav{display:none;} }
+    .bottomNav button{
+      flex:1;
+      padding:10px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      cursor:pointer;
+      font-size:12px;
+    }
+    .bottomNav button.active{background: rgba(110,168,255,.15); border-color: rgba(110,168,255,.35)}
+
+    .hint{font-size:12px; color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- LEFT / NAV (desktop) -->
+    <aside class="card" id="sidebar">
+      <div class="head">
